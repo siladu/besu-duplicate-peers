@@ -8,7 +8,7 @@ This repo is a modified version of https://github.com/macfarla/besu-duplicate-pe
 
 # Running
 
-Start either besu1 or besu2 and it should get Invalid MAC errors shortly after start up
+Start either besu1 or besu2 and it should get Invalid MAC errors shortly after start up (it's using a previously created but valid static-nodes.json with 2 enodes that won't match any nodes in your local setup)
 
 besu --config-file=besu1.conf
 
