@@ -1,5 +1,7 @@
 # invalid MAC error recreation
 
+https://github.com/hyperledger/besu/issues/3323
+
 Having a file containing static nodes unrelated to the running nodes cause Invalid MAC exception
 
 This repo is a modified version of https://github.com/macfarla/besu-duplicate-peers with the addition of static-nodes
