@@ -1,6 +1,34 @@
 # besu-duplicate-peers
 
-This repo is a modified version of https://github.com/macfarla/besu-duplicate-peers with the addition of static-nodes
+This repo is a modified version of https://github.com/macfarla/besu-duplicate-peers with the addition of static-nodes.
+
+To reproduce https://github.com/hyperledger/besu/issues/3322 follow the instructions below and leave both nodes running for a good while.
+
+Check for presence of self-references and duplicates like so:
+
+besu1:
+```
+curl --location --request POST 'http://localhost:8545' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "jsonrpc": "2.0",
+    "method": "admin_peers",
+    "params": [],
+    "id": 1
+}' | jq '.result | .[] | .enode' | sort | uniq -c
+```
+
+besu2:
+```
+curl --location --request POST 'http://localhost:8555' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "jsonrpc": "2.0",
+    "method": "admin_peers",
+    "params": [],
+    "id": 1
+}' | jq '.result | .[] | .enode' | sort | uniq -c
+```
 
 # Before running
 
