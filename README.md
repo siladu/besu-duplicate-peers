@@ -6,6 +6,8 @@ To reproduce https://github.com/hyperledger/besu/issues/3322 follow the instruct
 
 Check for presence of self-references and duplicates like so:
 
+# Verify Duplicates
+
 besu1:
 ```
 curl --location --request POST 'http://localhost:8545' \
