@@ -1,4 +1,12 @@
 # besu-duplicate-peers
+
+This repo is a modified version of https://github.com/macfarla/besu-duplicate-peers with the addition of static-nodes
+
+# Before running
+
+Run `./create-static-nodes.sh` to run besu, inspect the enodes and generate a static nodes file
+
+# Running
 setup to reproduce duplicate peers in besu
 
 If I start besu1 and then besu2, besu2 gets 2 peers 100% of the time.
