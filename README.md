@@ -34,7 +34,7 @@ curl --location --request POST 'http://localhost:8555' \
 
 # Before running
 
-Run `./create-static-nodes.sh` to run besu, inspect the enodes and generate a static nodes file
+Run `./create-static-nodes.sh` which runs besu, inspects the enodes, generates a static nodes file, then shuts down besu again
 
 # Running
 setup to reproduce duplicate peers in besu
