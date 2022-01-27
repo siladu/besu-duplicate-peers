@@ -1,30 +1,46 @@
-# besu-duplicate-peers
+# invalid MAC error recreation
+
+Having a file containing static nodes unrelated to the running nodes cause Invalid MAC exception
 
 This repo is a modified version of https://github.com/macfarla/besu-duplicate-peers with the addition of static-nodes
 
-# Before running
-
-Run `./create-static-nodes.sh` to run besu, inspect the enodes and generate a static nodes file
-
 # Running
-setup to reproduce duplicate peers in besu
 
-If I start besu1 and then besu2, besu2 gets 2 peers 100% of the time.
+Start either besu1 or besu2 and it should get Invalid MAC errors shortly after start up
 
 besu --config-file=besu1.conf
 
 besu --config-file=besu2.conf
 
-extract from log files in besu1.log and besu2.log
-result of admin_peers in besu1-admin-peers and besu2-admin-peers
-
-If I then stop besu1 and restart it, besu2 goes from 2 to 1 peers and then back to 2 once they reconnect
-
-besu --version
-besu/v22.1.0-RC2-dev-2786ce91/osx-x86_64/oracle_openjdk-java-11
-* Java version: [`java -version`]
-openjdk version "11.0.10" 2021-01-19
-OpenJDK Runtime Environment (build 11.0.10+9)
-OpenJDK 64-Bit Server VM (build 11.0.10+9, mixed mode)
-* Kernel Version: [`uname -a`]
-Darwin Kernel Version 21.2.0: Sun Nov 28 20:28:54 PST 2021; root:xnu-8019.61.5~1/RELEASE_X86_64 x86_64
+```
+2022-01-28 07:55:27.701+10:00 | nioEventLoopGroup-3-8 | DEBUG | HandshakeHandlerOutbound | Wrote initial crypto handshake message to /127.0.0.1:30303.
+2022-01-28 07:55:27.707+10:00 | nioEventLoopGroup-3-9 | DEBUG | AbstractHandshakeHandler | Handshake error:
+org.hyperledger.besu.ethereum.p2p.rlpx.handshake.HandshakeException: Decrypting an incoming handshake message failed
+	at org.hyperledger.besu.ethereum.p2p.rlpx.handshake.ecies.ECIESHandshaker.handleMessage(ECIESHandshaker.java:211)
+	at org.hyperledger.besu.ethereum.p2p.rlpx.connections.netty.HandshakeHandlerInbound.nextHandshakeMessage(HandshakeHandlerInbound.java:60)
+	at org.hyperledger.besu.ethereum.p2p.rlpx.connections.netty.AbstractHandshakeHandler.channelRead0(AbstractHandshakeHandler.java:92)
+	at org.hyperledger.besu.ethereum.p2p.rlpx.connections.netty.AbstractHandshakeHandler.channelRead0(AbstractHandshakeHandler.java:44)
+	at io.netty.channel.SimpleChannelInboundHandler.channelRead(SimpleChannelInboundHandler.java:99)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:379)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:365)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:357)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1410)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:379)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:365)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:919)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:166)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:719)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:655)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:581)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:493)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:986)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: org.bouncycastle.crypto.InvalidCipherTextException: Invalid MAC.
+	at org.hyperledger.besu.ethereum.p2p.rlpx.handshake.ecies.ECIESEncryptionEngine.decrypt(ECIESEncryptionEngine.java:277)
+	at org.hyperledger.besu.ethereum.p2p.rlpx.handshake.ecies.ECIESEncryptionEngine.decrypt(ECIESEncryptionEngine.java:215)
+	at org.hyperledger.besu.ethereum.p2p.rlpx.handshake.ecies.EncryptedMessage.decryptMsgEIP8(EncryptedMessage.java:94)
+	at org.hyperledger.besu.ethereum.p2p.rlpx.handshake.ecies.ECIESHandshaker.handleMessage(ECIESHandshaker.java:203)
+	... 20 more
+```
